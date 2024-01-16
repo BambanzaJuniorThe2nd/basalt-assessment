@@ -13,3 +13,5 @@ export interface ManagesDbs {
   mainDb(): Db;
   db(name: string): Db;
 }
+
+export interface Container {}
