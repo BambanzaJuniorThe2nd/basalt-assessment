@@ -1,5 +1,5 @@
-import { CoreConfig } from './types';
-import { DbManager } from './db-manager';
+import { CoreConfig } from "./types";
+import { DbManager } from "./db-manager";
 
 export const bootstrap = async (config: CoreConfig) => {
   // init db

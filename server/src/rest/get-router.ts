@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import * as bodyParser from 'body-parser';
-import * as cors from 'cors';
-import { root } from './routes';
-import { injectCore, errorHandler, error404Handler } from './middleware';
-import { Container } from '../core';
-import { ApiMessage } from '.';
+import { Router } from "express";
+import * as bodyParser from "body-parser";
+import * as cors from "cors";
+import { root } from "./routes";
+import { injectCore, errorHandler, error404Handler } from "./middleware";
+import { Container } from "../core";
+import { ApiMessage } from ".";
 
 /**
  * returns a router than handles

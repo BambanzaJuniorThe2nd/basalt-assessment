@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Container } from "../../core";
+import { Container } from "../core";
 
 export interface RestConfig {
   apiRoot: string;
