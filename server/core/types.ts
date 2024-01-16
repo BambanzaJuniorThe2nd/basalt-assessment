@@ -1,4 +1,4 @@
-import { Db, ObjectId } from 'mongodb';
+import { Db, ObjectId } from "mongodb";
 
 export interface CoreConfig {
   baseUrl: string;
