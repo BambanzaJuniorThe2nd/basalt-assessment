@@ -15,12 +15,12 @@ export const getRouter = (core: Container) => {
   const router = Router();
   router.use(bodyParser.json());
   router.use(cors());
-  router.use(() => injectCore(core));
+  router.use(injectCore(core));
 
   router.use("/", root);
 
-  router.use(() => errorHandler());
-  router.use(() => error404Handler(ApiMessage.ERROR_ENDPOINT_DOES_NOT_EXIST));
+  router.use(errorHandler());
+  router.use(error404Handler(ApiMessage.ERROR_ENDPOINT_DOES_NOT_EXIST));
 
   return router;
 };

@@ -17,5 +17,5 @@ export const mountApi = (
 ) => {
   const router = getRouter(core);
   server.use(config.apiRoot, router);
-  server.use(() => error404Handler(ApiMessage.ERROR_RESOURCE_NOT_FOUND));
+  server.use(error404Handler(ApiMessage.ERROR_RESOURCE_NOT_FOUND));
 };
