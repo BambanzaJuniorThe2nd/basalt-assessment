@@ -1,5 +1,5 @@
 import { RestConfig, getRouter } from '.';
-import { Server } from '../server';
+import { Server } from '../src/server';
 import { Container } from '../core';
 import { error404Handler } from './middleware';
 import { ApiMessage } from '.';

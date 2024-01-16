@@ -8,4 +8,8 @@ export const bootstrap = async (config: CoreConfig) => {
     mainDb: config.dbMain,
   });
   await dbManager.initialize();
+
+  return Object.freeze({
+    dbManager,
+  });
 };
