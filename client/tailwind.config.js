@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+// Added next/babel as a devDependency to fix missing module error
+
 module.exports = {
   darkMode: ["class"],
   content: [
