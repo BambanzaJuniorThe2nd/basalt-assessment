@@ -71,3 +71,13 @@ export interface IMDBEntryRepository {
   getById(id: string): Promise<IMDBEntry>;
   getByTitle(title: string): Promise<IMDBEntry>;
 }
+
+/**
+ * Interface for options to make requests to the IMDB API.
+ * Contains the base URL, headers key, and headers host.
+ */
+export interface IMDBEntryOptions {
+  IMDB_API__URL: string;
+  IMDB_API__HEADERS_KEY: string;
+  IMDB_API__HEADERS_HOST: string;
+}
