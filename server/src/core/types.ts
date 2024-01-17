@@ -90,6 +90,17 @@ export interface IMDBEntryOptions {
 }
 
 /**
+ * Interface defining options for making requests to retrieve
+ * IMDb related YouTube videos. Contains typical fields like
+ * API key, host, url, and params.
+ */
+export interface IMDBRelatedYouTubeVideoOptions {
+  YOUTUBE_API__URL: string;
+  YOUTUBE_API__HEADERS_KEY: string;
+  YOUTUBE_API__HEADERS_HOST: string;
+}
+
+/**
  * Interface defining options for making requests to the RapidAPI.
  * Contains typical fields like url, method, API key, host,
  * params, and data.
@@ -103,12 +114,13 @@ export interface RapidApiRequestOptions {
   data?: object;
 }
 
+
 /**
- * Interface for IMDb related YouTube videos that extends HasId and HasTimestamp.
- * Contains properties for the video ID, thumbnail, title, author,
- * view count, duration, publish date, and description.
+ * Interface defining the shape of a document for storing
+ * IMDb related YouTube videos. Extends base interfaces
+ * for an ID and timestamp.
  */
-export interface IMDbRelatedYouTubeVideos extends HasId, HasTimestamp {
+export interface IMDBRelatedYouTubeVideoDoc extends HasId, HasTimestamp {
   imdbId: string;
   relatedYoutubeVideos: {
     videoId: string;
@@ -123,12 +135,13 @@ export interface IMDbRelatedYouTubeVideos extends HasId, HasTimestamp {
 }
 
 
+
 /**
- * Interface for the IMDbRelatedYouTubeVideos repository/data access methods.
- * Contains methods to get all videos, get by IMDB ID, and search by query.
+ * Interface defining the methods required for a repository that handles
+ * retrieving IMDb related YouTube videos.
  */
-export interface IMDbRelatedYouTubeVideosRepository {
-  getAll(): Promise<IMDbRelatedYouTubeVideos[]>;
-  getByIMDBId(imdbId: string): Promise<IMDbRelatedYouTubeVideos>;
-  getByQuery(query: string): Promise<IMDbRelatedYouTubeVideos>;
+export interface IMDBRelatedYouTubeVideosRepository {
+  getAll(): Promise<IMDBRelatedYouTubeVideoDoc[]>;
+  getByIMDBId(imdbId: string): Promise<IMDBRelatedYouTubeVideoDoc>;
+  getByQuery(query: string, imdbId: string): Promise<IMDBRelatedYouTubeVideoDoc>;
 }

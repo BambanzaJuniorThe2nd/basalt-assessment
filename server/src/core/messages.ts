@@ -8,5 +8,6 @@ export enum CoreMessage {
   ERROR_ENTITY_UPDATE_FAILED = "Entity update failed",
   ERROR_ARGS_INVALID = "Invalid arguments",
   ERROR_IMDB_ENTRY_NOT_FOUND = 'IMDB Entry could not be found',
+  ERROR_IMDB_ENTRY_RELATED_VIDEOS_NOT_FOUND = 'IMDB Entry related videos could not be found',
   ERROR_IMDB_ENTRY_INSERT_FAILED = 'IMDB Entry could not be inserted',
 }

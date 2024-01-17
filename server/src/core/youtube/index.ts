@@ -1,0 +1,1 @@
+export { IMDBRelatedYouTubeVideos } from './repository';
