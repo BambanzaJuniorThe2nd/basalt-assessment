@@ -85,4 +85,23 @@ export class IMDBEntries implements IMDBEntryRepository {
       throw new CoreError(e.message, ErrorCode.DB_ERROR);
     }
   }
+
+  async getByImdbId(imdbId: string): Promise<IMDBEntry> {
+    try {
+      const entry = await this.collection.findOne<IMDBEntry>({ imdbId });
+      if (!entry) {
+        throw new CoreError(
+          messages.ERROR_IMDB_ENTRY_NOT_FOUND,
+          ErrorCode.DB_OBJECT_NOT_FOUND
+        );
+      }
+
+      return entry;
+    } catch (e) {
+      if (e instanceof CoreError) {
+        throw e;
+      }
+      throw new CoreError(e.message, ErrorCode.DB_ERROR);
+    }
+  }
 }
