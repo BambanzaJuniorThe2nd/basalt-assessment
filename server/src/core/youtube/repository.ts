@@ -1,25 +1,19 @@
-import {
-    IMDBRelatedYouTubeVideoDoc,
-  IMDBRelatedYouTubeVideosRepository,
-  IMDBRelatedYouTubeVideoOptions,
-} from "../types";
+import { YouTubeDoc, YoutubeRepository, YoutubeRepoOpts } from "../types";
 import { ManagesDbs, CoreError, ErrorCode, CoreMessage as messages } from "..";
 import { createRapidApiRequest } from "../util";
 import { Db, Collection, ObjectId } from "mongodb";
 
-const COLLECTION = "youtubes";
-export class IMDBRelatedYouTubeVideos
-  implements IMDBRelatedYouTubeVideosRepository
-{
+const COLLECTION = "youtubeDocs";
+export class YoutubeDocs implements YoutubeRepository {
   readonly dbManager: ManagesDbs;
   readonly db: Db;
-  readonly collection: Collection<IMDBRelatedYouTubeVideoDoc>;
+  readonly collection: Collection<YouTubeDoc>;
   readonly YOUTUBE_API__URL: string;
   readonly YOUTUBE_API__HEADERS_KEY: string;
   readonly YOUTUBE_API__HEADERS_HOST: string;
   private _indexesCreated: boolean;
 
-  constructor(dbManager: ManagesDbs, opts: IMDBRelatedYouTubeVideoOptions) {
+  constructor(dbManager: ManagesDbs, opts: YoutubeRepoOpts) {
     this.dbManager = dbManager;
     this.db = dbManager.mainDb();
     this.collection = this.db.collection(COLLECTION);
@@ -55,9 +49,9 @@ export class IMDBRelatedYouTubeVideos
   /**
    * Retrieves all IMDBRelatedYouTubeVideos documents from the database.
    */
-  async getAll(): Promise<IMDBRelatedYouTubeVideoDoc[]> {
+  async getAll(): Promise<YouTubeDoc[]> {
     try {
-      const result = await this.collection.find({});
+      const result = this.collection.find({});
       return await result.toArray();
     } catch (e) {
       if (e instanceof CoreError) {
@@ -73,9 +67,9 @@ export class IMDBRelatedYouTubeVideos
    * @returns The retrieved IMDBRelatedYouTubeVideo document.
    * @throws {CoreError} If no document is found for the given IMDB ID.
    */
-  async getByIMDBId(imdbId: string): Promise<IMDBRelatedYouTubeVideoDoc> {
+  async getByIMDBId(imdbId: string): Promise<YouTubeDoc> {
     try {
-      const entry = await this.collection.findOne<IMDBRelatedYouTubeVideoDoc>({
+      const entry = await this.collection.findOne<YouTubeDoc>({
         imdbId,
       });
       if (!entry) {
@@ -95,15 +89,12 @@ export class IMDBRelatedYouTubeVideos
   }
 
   /**
-   * Retrieves an IMDBRelatedYouTubeVideo document from the database by querying YouTube API.
-   * @param query - The search query to use for the YouTube API request.
-   * @param imdbId - The IMDB ID to associate the retrieved videos with.
-   * @returns The retrieved and inserted IMDBRelatedYouTubeVideo document.
+   * Retrieves an IMDBRelatedYouTubeVideo document from the database by searching YouTube.
+   * @param query - The search query to use for finding related YouTube videos.
+   * @param imdbId - The IMDB ID to associate the found YouTube videos with.
+   * @returns The created IMDBRelatedYouTubeVideo document.
    */
-  async getByQuery(
-    query: string,
-    imdbId: string
-  ): Promise<IMDBRelatedYouTubeVideoDoc> {
+  async getByQuery(query: string, imdbId: string): Promise<YouTubeDoc> {
     try {
       const data = await createRapidApiRequest({
         API_KEY: this.YOUTUBE_API__HEADERS_KEY,

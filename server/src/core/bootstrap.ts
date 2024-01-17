@@ -1,7 +1,7 @@
 import { CoreConfig, Container } from "./types";
 import { DbManager } from "./db-manager";
-import { IMDBEntries } from './imdb';
-import { IMDBRelatedYouTubeVideos } from './youtube';
+import { IMDBDocs } from './imdb';
+import { YoutubeDocs } from './youtube';
 
 export const bootstrap = async (config: CoreConfig): Promise<Container> => {
   // init db
@@ -12,7 +12,7 @@ export const bootstrap = async (config: CoreConfig): Promise<Container> => {
   await dbManager.initialize();
 
   // init imdb entries
-  const imdbEntries = new IMDBEntries(dbManager, {
+  const imdbEntries = new IMDBDocs(dbManager, {
     IMDB_API__URL: config.IMDB_API__URL,
     IMDB_API__HEADERS_KEY: config.IMDB_API__HEADERS_KEY,
     IMDB_API__HEADERS_HOST: config.IMDB_API__HEADERS_HOST,
@@ -20,7 +20,7 @@ export const bootstrap = async (config: CoreConfig): Promise<Container> => {
   await imdbEntries.createIndexes();
 
   // init ytbVideos
-  const ytbVideos = new IMDBRelatedYouTubeVideos(dbManager, {
+  const ytbVideos = new YoutubeDocs(dbManager, {
     YOUTUBE_API__URL: config.YOUTUBE_API__URL,
     YOUTUBE_API__HEADERS_KEY: config.YOUTUBE_API__HEADERS_KEY,
     YOUTUBE_API__HEADERS_HOST: config.YOUTUBE_API__HEADERS_HOST,

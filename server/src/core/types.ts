@@ -25,8 +25,7 @@ export interface ManagesDbs {
   db(name: string): Db;
 }
 
-export interface Container {
-}
+export interface Container {}
 
 /**
  * Interface for an object ID field on a document.
@@ -46,12 +45,10 @@ export interface HasTimestamp {
 }
 
 /**
- * Interface for an IMDB movie entry.
- * Contains typical fields for an entry like id, title, year,
- * running time, principals, etc.
+ * Interface defining the specific fields returned from the IMDB API
+ * that will be part of the IMDBDoc model.
  */
-export interface IMDBEntry extends HasId, HasTimestamp {
-  imdbId: string;
+export interface SpecificFieldsToIMDBDoc {
   image: { height: number; id: string; url: string; width: number };
   runningTimeInMinutes: number;
   title: string;
@@ -68,33 +65,49 @@ export interface IMDBEntry extends HasId, HasTimestamp {
 }
 
 /**
- * Interface for an IMDB movie entry repository.
- * Contains methods for getting all entries, getting by ID,
- * and getting by title.
+ * Interface defining a field for storing an IMDB ID on a document.
+ * Contains an imdbId string field.
  */
-export interface IMDBEntryRepository {
-  getAll(): Promise<IMDBEntry[]>;
-  getById(id: string): Promise<IMDBEntry>;
-  getByIMDBId(imdbId: string): Promise<IMDBEntry>;
-  getByTitle(title: string): Promise<IMDBEntry>;
+export interface HasIMDBId {
+  imdbId: string;
 }
 
 /**
- * Interface for options to make requests to the IMDB API.
- * Contains the base URL, headers key, and headers host.
+ * Interface defining the shape of the IMDBDoc model,
+ * which contains the fields from various included interfaces.
  */
-export interface IMDBEntryOptions {
+export interface IMDBDoc
+  extends HasId,
+    HasIMDBId,
+    SpecificFieldsToIMDBDoc,
+    HasTimestamp {}
+
+/**
+ * Interface defining the methods that should be implemented by a repository
+ * for interacting with IMDB document data in the database.
+ */
+export interface IMDBRepository {
+  getAll(): Promise<IMDBDoc[]>;
+  getById(id: string): Promise<IMDBDoc>;
+  getByIMDBId(imdbId: string): Promise<IMDBDoc>;
+  getByTitle(title: string): Promise<IMDBDoc>;
+}
+
+/**
+ * Interface defining options for making requests to the IMDB API.
+ * Contains typical fields like url, headers with API key and host.
+ */
+export interface IMDBRepoOpts {
   IMDB_API__URL: string;
   IMDB_API__HEADERS_KEY: string;
   IMDB_API__HEADERS_HOST: string;
 }
 
 /**
- * Interface defining options for making requests to retrieve
- * IMDb related YouTube videos. Contains typical fields like
- * API key, host, url, and params.
+ * Interface defining options for making requests to the YouTube API.
+ * Contains typical fields like url, headers with API key and host.
  */
-export interface IMDBRelatedYouTubeVideoOptions {
+export interface YoutubeRepoOpts {
   YOUTUBE_API__URL: string;
   YOUTUBE_API__HEADERS_KEY: string;
   YOUTUBE_API__HEADERS_HOST: string;
@@ -114,14 +127,11 @@ export interface RapidApiRequestOptions {
   data?: object;
 }
 
-
 /**
- * Interface defining the shape of a document for storing
- * IMDb related YouTube videos. Extends base interfaces
- * for an ID and timestamp.
+ * Interface defining the fields specific to a YouTube document
+ * that contain data fetched from the YouTube API.
  */
-export interface IMDBRelatedYouTubeVideoDoc extends HasId, HasTimestamp {
-  imdbId: string;
+export interface SpecificFieldsToYoutubeDoc {
   relatedYoutubeVideos: {
     videoId: string;
     thumbnail: string;
@@ -134,14 +144,39 @@ export interface IMDBRelatedYouTubeVideoDoc extends HasId, HasTimestamp {
   }[];
 }
 
-
+/**
+ * Interface defining the fields specific to a YouTube document
+ * that contain data fetched from the YouTube API.
+ */
+export interface YouTubeDoc
+  extends HasId,
+    HasIMDBId,
+    SpecificFieldsToYoutubeDoc,
+    HasTimestamp {}
 
 /**
- * Interface defining the methods required for a repository that handles
- * retrieving IMDb related YouTube videos.
+ * Interface defining the methods available in the YouTube repository.
+ * Contains methods for fetching YouTube videos by ID, IMDB ID, or search query.
  */
-export interface IMDBRelatedYouTubeVideosRepository {
-  getAll(): Promise<IMDBRelatedYouTubeVideoDoc[]>;
-  getByIMDBId(imdbId: string): Promise<IMDBRelatedYouTubeVideoDoc>;
-  getByQuery(query: string, imdbId: string): Promise<IMDBRelatedYouTubeVideoDoc>;
+export interface YoutubeRepository {
+  getAll(): Promise<YouTubeDoc[]>;
+  getByIMDBId(imdbId: string): Promise<YouTubeDoc>;
+  getByQuery(query: string, imdbId: string): Promise<YouTubeDoc>;
+}
+
+/**
+ * Interface defining the fields for an aggregator document.
+ * Aggregator documents contain aggregated data from multiple sources.
+ */
+export interface AggregatorDoc
+  extends HasId,
+    HasIMDBId,
+    SpecificFieldsToIMDBDoc,
+    SpecificFieldsToYoutubeDoc,
+    HasTimestamp {}
+
+export interface AggregatorRepository {
+  getAll(): Promise<AggregatorDoc[]>;
+  getByIMDBId(imdbId: string): Promise<AggregatorDoc>;
+  getByQuery(query: string, imdbId: string): Promise<AggregatorDoc>;
 }

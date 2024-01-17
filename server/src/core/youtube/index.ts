@@ -1,1 +1,1 @@
-export { IMDBRelatedYouTubeVideos } from './repository';
+export { YoutubeDocs } from './repository';

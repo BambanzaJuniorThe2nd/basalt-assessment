@@ -1,19 +1,19 @@
-import { IMDBEntry, IMDBEntryOptions, IMDBEntryRepository } from "../types";
+import { IMDBDoc, IMDBRepoOpts, IMDBRepository } from "../types";
 import { ManagesDbs, CoreError, ErrorCode, CoreMessage as messages } from "..";
 import { createRapidApiRequest } from "../util";
 import { Db, Collection, ObjectId } from "mongodb";
 
-const COLLECTION = "imdbEntries";
-export class IMDBEntries implements IMDBEntryRepository {
+const COLLECTION = "imdbDocs";
+export class IMDBDocs implements IMDBRepository {
   readonly dbManager: ManagesDbs;
   readonly db: Db;
-  readonly collection: Collection<IMDBEntry>;
+  readonly collection: Collection<IMDBDoc>;
   readonly IMDB_API__URL: string;
   readonly IMDB_API__HEADERS_KEY: string;
   readonly IMDB_API__HEADERS_HOST: string;
   private _indexesCreated: boolean;
 
-  constructor(dbManager: ManagesDbs, opts: IMDBEntryOptions) {
+  constructor(dbManager: ManagesDbs, opts: IMDBRepoOpts) {
     this.dbManager = dbManager;
     this.db = dbManager.mainDb();
     this.collection = this.db.collection(COLLECTION);
@@ -23,18 +23,20 @@ export class IMDBEntries implements IMDBEntryRepository {
     this._indexesCreated = false;
   }
 
+
   /**
-   * check whether indexes have been created
-   * on nfts collection
+   * Checks if the database indexes have been created for this collection.
+   *
+   * @returns {boolean} True if the indexes have been created, false otherwise.
    */
   get indexesCreated(): boolean {
     return this._indexesCreated;
   }
 
+
   /**
-   * creates required indexes on
-   * nfts collections
-   * @throws DB_ERROR
+   * Checks if the database indexes have been created for this collection,
+   * and creates them if they do not exist.
    */
   async createIndexes(): Promise<void> {
     if (this._indexesCreated) return;
@@ -46,10 +48,11 @@ export class IMDBEntries implements IMDBEntryRepository {
     }
   }
 
+
   /**
-   * Retrieves all IMDB entries from the database.
+   * Retrieves all IMDB document entries from the database.
    */
-  async getAll(): Promise<IMDBEntry[]> {
+  async getAll(): Promise<IMDBDoc[]> {
     try {
       const result = await this.collection.find({});
       return await result.toArray();
@@ -62,15 +65,11 @@ export class IMDBEntries implements IMDBEntryRepository {
   }
 
   /**
-   * Retrieves an IMDB entry by ID from the database.
-   *
-   * @param id - The ObjectId of the IMDB entry to retrieve.
-   * @returns The IMDB entry document.
-   * @throws {CoreError} If no entry is found for the given ID.
+   * Retrieves an IMDB document entry by its MongoDB ID.
    */
-  async getById(id: string): Promise<IMDBEntry> {
+  async getById(id: string): Promise<IMDBDoc> {
     try {
-      const entry = await this.collection.findOne<IMDBEntry>({
+      const entry = await this.collection.findOne<IMDBDoc>({
         _id: new ObjectId(id),
       });
       if (!entry) {
@@ -89,16 +88,13 @@ export class IMDBEntries implements IMDBEntryRepository {
     }
   }
 
+
   /**
-   * Retrieves an IMDB entry by imdbId from the database.
-   *
-   * @param imdbId - The imdbId of the IMDB entry to retrieve.
-   * @returns The IMDB entry document.
-   * @throws {CoreError} If no entry is found for the given imdbId.
+   * Retrieves an IMDB document entry by its IMDB ID.
    */
-  async getByIMDBId(imdbId: string): Promise<IMDBEntry> {
+  async getByIMDBId(imdbId: string): Promise<IMDBDoc> {
     try {
-      const entry = await this.collection.findOne<IMDBEntry>({ imdbId });
+      const entry = await this.collection.findOne<IMDBDoc>({ imdbId });
       if (!entry) {
         throw new CoreError(
           messages.ERROR_IMDB_ENTRY_NOT_FOUND,
@@ -115,19 +111,20 @@ export class IMDBEntries implements IMDBEntryRepository {
     }
   }
 
+
   /**
-   * Retrieves an IMDB entry by title from the database.
-   *
-   * @param title - The title of the IMDB entry to retrieve.
-   * @returns The IMDB entry document.
-   * @throws {CoreError} If no entry is found for the given title.
+   * Retrieves an IMDB document entry by searching for a title match.
+   * Performs case-insensitive search on the title with whitespace removed.
+   * If no match is found, calls the IMDB API to retrieve data for the title.
+   * Inserts the retrieved data into the database if found via the API.
+   * Throws an error if no match is found in the database or via the API.
    */
-  async getByTitle(title: string): Promise<IMDBEntry> {
+  async getByTitle(title: string): Promise<IMDBDoc> {
     try {
       // Remove white spaces from the query parameter and use a case-insensitive regular expression
       const cleanedTitle = title.replace(/\s/g, "");
       const query = { title: { $regex: new RegExp(cleanedTitle, "i") } };
-      let entry = await this.collection.findOne<IMDBEntry>(query);
+      let entry = await this.collection.findOne<IMDBDoc>(query);
       
       if (!entry) {
         const data = await createRapidApiRequest({

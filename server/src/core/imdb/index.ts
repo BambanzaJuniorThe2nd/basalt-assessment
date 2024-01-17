@@ -1,1 +1,1 @@
-export { IMDBEntries } from './repository';
+export { IMDBDocs } from './repository';
