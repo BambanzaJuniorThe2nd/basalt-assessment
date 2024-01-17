@@ -11,6 +11,12 @@ export interface CoreConfig {
   dbMain: string;
   dbPrefix: string;
   clientBaseUrl: string;
+  IMDB_API__URL: string;
+  IMDB_API__HEADERS_KEY: string;
+  IMDB_API__HEADERS_HOST: string;
+  YOUTUBE_API__URL: string;
+  YOUTUBE_API__HEADERS_KEY: string;
+  YOUTUBE_API__HEADERS_HOST: string;
 }
 
 export interface ManagesDbs {
@@ -19,7 +25,8 @@ export interface ManagesDbs {
   db(name: string): Db;
 }
 
-export interface Container {}
+export interface Container {
+}
 
 /**
  * Interface for an object ID field on a document.
@@ -37,7 +44,6 @@ export interface HasTimestamp {
   updatedAt: Date;
   createdAt: Date;
 }
-
 
 /**
  * Interface for an IMDB movie entry.
@@ -95,4 +101,23 @@ export interface RapidApiRequestOptions {
   API_HOST: string;
   params?: object;
   data?: object;
+}
+
+/**
+ * Interface for IMDb related YouTube videos that extends HasId and HasTimestamp.
+ * Contains properties for the video ID, thumbnail, title, author,
+ * view count, duration, publish date, and description.
+ */
+export interface IMDbRelatedYouTubeVideos extends HasId, HasTimestamp {
+  imdbId: string;
+  relatedYoutubeVideos: {
+    videoId: string;
+    thumbnail: string;
+    title: string;
+    author: { profile: string; name: string };
+    viewCount: string;
+    duration: string;
+    published: string;
+    description: string;
+  }[];
 }

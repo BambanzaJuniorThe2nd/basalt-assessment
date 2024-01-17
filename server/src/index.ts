@@ -18,6 +18,12 @@ const loadConfig = (env: any): SuperConfig => {
     apiRoot: env.API_ROOT || "/api",
     baseUrl: env.BASE_URL || "http://localhost:5000",
     clientBaseUrl: env.CLIENT_BASE_URL || "http://localhost:3000",
+    IMDB_API__URL: env.IMDB_API__URL || "",
+    IMDB_API__HEADERS_KEY: env.IMDB_API__HEADERS_KEY || "",
+    IMDB_API__HEADERS_HOST: env.IMDB_API__HEADERS_HOST || "",
+    YOUTUBE_API__URL: env.YOUTUBE_API__URL || "",
+    YOUTUBE_API__HEADERS_KEY: env.YOUTUBE_API__HEADERS_KEY || "",
+    YOUTUBE_API__HEADERS_HOST: env.YOUTUBE_API__HEADERS_HOST || "",
   };
 };
 
