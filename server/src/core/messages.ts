@@ -7,4 +7,5 @@ export enum CoreMessage {
   ERROR_ENTITY_NOT_FOUND = "Entity could not be found in database",
   ERROR_ENTITY_UPDATE_FAILED = "Entity update failed",
   ERROR_ARGS_INVALID = "Invalid arguments",
+  ERROR_IMDB_ENTRY_NOT_FOUND = 'IMDB Entry could not be found',
 }

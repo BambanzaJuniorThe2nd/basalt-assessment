@@ -1,21 +1,18 @@
 import { IMDBEntry, IMDBEntryOptions, IMDBEntryRepository } from "../types";
-import { ManagesDbs, CoreError, ErrorCode, CoreMessage as messages } from '..';
-import { Db, Collection, ObjectId } from 'mongodb';
+import { ManagesDbs, CoreError, ErrorCode, CoreMessage as messages } from "..";
+import { Db, Collection, ObjectId } from "mongodb";
 
-const COLLECTION = 'imdbEntries';
+const COLLECTION = "imdbEntries";
 export class IMDBEntries implements IMDBEntryRepository {
   readonly dbManager: ManagesDbs;
   readonly db: Db;
   readonly collection: Collection<IMDBEntry>;
   readonly IMDB_API__URL: string;
-  readonly IMDB_API__HEADERS_KEY: string
+  readonly IMDB_API__HEADERS_KEY: string;
   readonly IMDB_API__HEADERS_HOST: string;
   private _indexesCreated: boolean;
 
-  constructor(
-    dbManager: ManagesDbs,
-    opts: IMDBEntryOptions
-  ) {
+  constructor(dbManager: ManagesDbs, opts: IMDBEntryOptions) {
     this.dbManager = dbManager;
     this.db = dbManager.mainDb();
     this.collection = this.db.collection(COLLECTION);
@@ -55,6 +52,32 @@ export class IMDBEntries implements IMDBEntryRepository {
     try {
       const result = await this.collection.find({});
       return await result.toArray();
+    } catch (e) {
+      if (e instanceof CoreError) {
+        throw e;
+      }
+      throw new CoreError(e.message, ErrorCode.DB_ERROR);
+    }
+  }
+
+  /**
+   * Retrieves an IMDB entry by ID from the database.
+   *
+   * @param id - The ObjectId of the IMDB entry to retrieve.
+   * @returns The IMDB entry document.
+   * @throws {CoreError} If no entry is found for the given ID.
+   */
+  async getById(id: string): Promise<IMDBEntry> {
+    try {
+      const entry = await this.collection.findOne<IMDBEntry>({ _id: new ObjectId(id) });
+      if (!entry) {
+        throw new CoreError(
+          messages.ERROR_IMDB_ENTRY_NOT_FOUND,
+          ErrorCode.DB_OBJECT_NOT_FOUND
+        );
+      }
+
+      return entry;
     } catch (e) {
       if (e instanceof CoreError) {
         throw e;

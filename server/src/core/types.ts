@@ -69,6 +69,7 @@ export interface IMDBEntry extends HasId, HasTimestamp {
 export interface IMDBEntryRepository {
   getAll(): Promise<IMDBEntry[]>;
   getById(id: string): Promise<IMDBEntry>;
+  getByIMDBId(imdbId: string): Promise<IMDBEntry>;
   getByTitle(title: string): Promise<IMDBEntry>;
 }
 
