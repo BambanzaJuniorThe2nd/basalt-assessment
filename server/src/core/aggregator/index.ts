@@ -1,0 +1,1 @@
+export { AggregatorDocs } from './repository';

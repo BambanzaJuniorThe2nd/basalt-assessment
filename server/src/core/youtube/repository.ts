@@ -74,7 +74,7 @@ export class YoutubeDocs implements YoutubeRepository {
       });
       if (!entry) {
         throw new CoreError(
-          messages.ERROR_IMDB_ENTRY_RELATED_VIDEOS_NOT_FOUND,
+          messages.ERROR_YOUTUBE_DOC_NOT_FOUND,
           ErrorCode.DB_OBJECT_NOT_FOUND
         );
       }
@@ -105,12 +105,12 @@ export class YoutubeDocs implements YoutubeRepository {
       });
       if (!data || data.length === 0) {
         throw new CoreError(
-          messages.ERROR_IMDB_ENTRY_RELATED_VIDEOS_NOT_FOUND,
+          messages.ERROR_YOUTUBE_DOC_NOT_FOUND,
           ErrorCode.DB_OBJECT_NOT_FOUND
         );
       }
 
-      const entry = {
+      const doc = {
         _id: new ObjectId(),
         imdbId,
         relatedYoutubeVideos: data,
@@ -118,15 +118,15 @@ export class YoutubeDocs implements YoutubeRepository {
         updatedAt: new Date(),
       };
 
-      const res = await this.collection.insertOne(entry);
+      const res = await this.collection.insertOne(doc);
       if (!res.acknowledged) {
         throw new CoreError(
-          messages.ERROR_IMDB_ENTRY_INSERT_FAILED,
+          messages.ERROR_YOUTUBE_DOC_INSERT_FAILED,
           ErrorCode.DB_OP_FAILED
         );
       }
 
-      return entry;
+      return doc;
     } catch (e) {
       if (e instanceof CoreError) {
         throw e;

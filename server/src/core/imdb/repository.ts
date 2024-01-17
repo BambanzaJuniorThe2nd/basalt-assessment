@@ -74,7 +74,7 @@ export class IMDBDocs implements IMDBRepository {
       });
       if (!entry) {
         throw new CoreError(
-          messages.ERROR_IMDB_ENTRY_NOT_FOUND,
+          messages.ERROR_IMDB_DOC_NOT_FOUND,
           ErrorCode.DB_OBJECT_NOT_FOUND
         );
       }
@@ -97,7 +97,7 @@ export class IMDBDocs implements IMDBRepository {
       const entry = await this.collection.findOne<IMDBDoc>({ imdbId });
       if (!entry) {
         throw new CoreError(
-          messages.ERROR_IMDB_ENTRY_NOT_FOUND,
+          messages.ERROR_IMDB_DOC_NOT_FOUND,
           ErrorCode.DB_OBJECT_NOT_FOUND
         );
       }
@@ -136,7 +136,7 @@ export class IMDBDocs implements IMDBRepository {
         });
         if (!data || !data.results || data.results.length === 0) {
           throw new CoreError(
-            messages.ERROR_IMDB_ENTRY_NOT_FOUND,
+            messages.ERROR_IMDB_DOC_NOT_FOUND,
             ErrorCode.DB_OBJECT_NOT_FOUND
           );
         }
@@ -167,7 +167,7 @@ export class IMDBDocs implements IMDBRepository {
         const res = await this.collection.insertOne(entry);
         if (!res.acknowledged) {
           throw new CoreError(
-            messages.ERROR_IMDB_ENTRY_INSERT_FAILED,
+            messages.ERROR_IMDB_DOC_INSERT_FAILED,
             ErrorCode.DB_OP_FAILED
           );
         }

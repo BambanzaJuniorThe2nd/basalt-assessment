@@ -177,6 +177,6 @@ export interface AggregatorDoc
 
 export interface AggregatorRepository {
   getAll(): Promise<AggregatorDoc[]>;
-  getByIMDBId(imdbId: string): Promise<AggregatorDoc>;
-  getByQuery(query: string, imdbId: string): Promise<AggregatorDoc>;
+  getById(id: string): Promise<AggregatorDoc>;
+  getBySearchTerm(term: string): Promise<AggregatorDoc>;
 }
