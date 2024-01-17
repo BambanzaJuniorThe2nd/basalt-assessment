@@ -47,4 +47,19 @@ export class IMDBEntries implements IMDBEntryRepository {
       throw new CoreError(e.message, ErrorCode.DB_ERROR);
     }
   }
+
+  /**
+   * Retrieves all IMDB entries from the database.
+   */
+  async getAll(): Promise<IMDBEntry[]> {
+    try {
+      const result = await this.collection.find({});
+      return await result.toArray();
+    } catch (e) {
+      if (e instanceof CoreError) {
+        throw e;
+      }
+      throw new CoreError(e.message, ErrorCode.DB_ERROR);
+    }
+  }
 }
