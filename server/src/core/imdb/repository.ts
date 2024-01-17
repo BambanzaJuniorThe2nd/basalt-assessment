@@ -23,7 +23,6 @@ export class IMDBService implements IMDBRepository {
     this._indexesCreated = false;
   }
 
-
   /**
    * Checks if the database indexes have been created for this collection.
    *
@@ -32,7 +31,6 @@ export class IMDBService implements IMDBRepository {
   get indexesCreated(): boolean {
     return this._indexesCreated;
   }
-
 
   /**
    * Checks if the database indexes have been created for this collection,
@@ -47,7 +45,6 @@ export class IMDBService implements IMDBRepository {
       throw new CoreError(e.message, ErrorCode.DB_ERROR);
     }
   }
-
 
   /**
    * Retrieves all IMDB document entries from the database.
@@ -88,7 +85,6 @@ export class IMDBService implements IMDBRepository {
     }
   }
 
-
   /**
    * Retrieves an IMDB document entry by its IMDB ID.
    */
@@ -111,7 +107,6 @@ export class IMDBService implements IMDBRepository {
     }
   }
 
-
   /**
    * Retrieves an IMDB document entry by searching for a title match.
    * Performs case-insensitive search on the title with whitespace removed.
@@ -125,7 +120,7 @@ export class IMDBService implements IMDBRepository {
       const cleanedTitle = title.replace(/\s/g, "");
       const query = { title: { $regex: new RegExp(cleanedTitle, "i") } };
       let entry = await this.collection.findOne<IMDBDoc>(query);
-      
+
       if (!entry) {
         const data = await createRapidApiRequest({
           API_KEY: this.IMDB_API__HEADERS_KEY,

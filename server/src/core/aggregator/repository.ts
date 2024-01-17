@@ -1,4 +1,9 @@
-import { AggregatorDoc, IMDBRepository, YoutubeRepository, AggregatorRepository } from "../types";
+import {
+  AggregatorDoc,
+  IMDBRepository,
+  YoutubeRepository,
+  AggregatorRepository,
+} from "../types";
 import { ManagesDbs, CoreError, ErrorCode, CoreMessage as messages } from "..";
 import { Db, Collection, ObjectId } from "mongodb";
 
@@ -123,15 +128,18 @@ export class AggregatorService implements AggregatorRepository {
           };
 
           if (youtubeDocs) {
-            doc = { ...doc, relatedYoutubeVideos: youtubeDocs.relatedYoutubeVideos };
+            doc = {
+              ...doc,
+              relatedYoutubeVideos: youtubeDocs.relatedYoutubeVideos,
             };
           }
-
-          await this.collection.insertOne(doc);
         }
 
-        return doc;
-      } catch (e) {
+        await this.collection.insertOne(doc);
+      }
+
+      return doc;
+    } catch (e) {
       if (e instanceof CoreError) {
         throw e;
       }

@@ -1,7 +1,7 @@
 import { CoreConfig, Container } from "./types";
 import { DbManager } from "./db-manager";
-import { IMDBService } from './imdb';
-import { YoutubeService } from './youtube';
+import { IMDBService } from "./imdb";
+import { YoutubeService } from "./youtube";
 import { AggregatorService } from "./aggregator";
 
 export const bootstrap = async (config: CoreConfig): Promise<Container> => {

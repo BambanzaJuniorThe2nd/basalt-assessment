@@ -1,1 +1,1 @@
-export { IMDBService } from './repository';
+export { IMDBService } from "./repository";

@@ -1,1 +1,1 @@
-export { AggregatorService } from './repository';
+export { AggregatorService } from "./repository";
