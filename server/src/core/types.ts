@@ -121,3 +121,14 @@ export interface IMDbRelatedYouTubeVideos extends HasId, HasTimestamp {
     description: string;
   }[];
 }
+
+
+/**
+ * Interface for the IMDbRelatedYouTubeVideos repository/data access methods.
+ * Contains methods to get all videos, get by IMDB ID, and search by query.
+ */
+export interface IMDbRelatedYouTubeVideosRepository {
+  getAll(): Promise<IMDbRelatedYouTubeVideos[]>;
+  getByIMDBId(imdbId: string): Promise<IMDbRelatedYouTubeVideos>;
+  getByQuery(query: string): Promise<IMDbRelatedYouTubeVideos>;
+}
