@@ -68,11 +68,10 @@ export class IMDBRelatedYouTubeVideos
   }
 
   /**
-   * Retrieves an IMDBRelatedYouTubeVideos document by IMDB ID from the database.
-   *
-   * @param imdbId - The IMDB ID to search for.
-   * @returns The IMDBRelatedYouTubeVideos document with the matching IMDB ID.
-   * @throws {CoreError} If no matching document is found.
+   * Retrieves an IMDBRelatedYouTubeVideo document from the database by IMDB ID.
+   * @param imdbId - The IMDB ID of the document to retrieve.
+   * @returns The retrieved IMDBRelatedYouTubeVideo document.
+   * @throws {CoreError} If no document is found for the given IMDB ID.
    */
   async getByIMDBId(imdbId: string): Promise<IMDBRelatedYouTubeVideoDoc> {
     try {
@@ -95,7 +94,16 @@ export class IMDBRelatedYouTubeVideos
     }
   }
 
-  async getByQuery(query: string, imdbId: string): Promise<IMDBRelatedYouTubeVideoDoc> {
+  /**
+   * Retrieves an IMDBRelatedYouTubeVideo document from the database by querying YouTube API.
+   * @param query - The search query to use for the YouTube API request.
+   * @param imdbId - The IMDB ID to associate the retrieved videos with.
+   * @returns The retrieved and inserted IMDBRelatedYouTubeVideo document.
+   */
+  async getByQuery(
+    query: string,
+    imdbId: string
+  ): Promise<IMDBRelatedYouTubeVideoDoc> {
     try {
       const data = await createRapidApiRequest({
         API_KEY: this.YOUTUBE_API__HEADERS_KEY,
