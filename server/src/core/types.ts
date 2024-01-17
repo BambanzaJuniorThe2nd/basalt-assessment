@@ -82,3 +82,17 @@ export interface IMDBEntryOptions {
   IMDB_API__HEADERS_KEY: string;
   IMDB_API__HEADERS_HOST: string;
 }
+
+/**
+ * Interface defining options for making requests to the RapidAPI.
+ * Contains typical fields like url, method, API key, host,
+ * params, and data.
+ */
+export interface RapidApiRequestOptions {
+  url: string;
+  method: string;
+  API_KEY: string;
+  API_HOST: string;
+  params?: object;
+  data?: object;
+}

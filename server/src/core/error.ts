@@ -16,6 +16,7 @@ export enum ErrorCode {
   MAIN_DB_NOT_SPECIFIED,
   INDEXES_NOT_CREATED,
   VALIDATION_ERROR,
+  RAPIDAPI_ERROR,
 }
 
 export function throwCoreError(message: string, code: ErrorCode) {
