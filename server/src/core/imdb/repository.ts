@@ -24,4 +24,27 @@ export class IMDBEntries implements IMDBEntryRepository {
     this.IMDB_API__HEADERS_HOST = opts.IMDB_API__HEADERS_HOST;
     this._indexesCreated = false;
   }
+
+  /**
+   * check whether indexes have been created
+   * on nfts collection
+   */
+  get indexesCreated(): boolean {
+    return this._indexesCreated;
+  }
+
+  /**
+   * creates required indexes on
+   * nfts collections
+   * @throws DB_ERROR
+   */
+  async createIndexes(): Promise<void> {
+    if (this._indexesCreated) return;
+    try {
+      await this.collection.createIndex({ _id: 1, imdbId: 1, title: 1 }, {});
+      this._indexesCreated = true;
+    } catch (e) {
+      throw new CoreError(e.message, ErrorCode.DB_ERROR);
+    }
+  }
 }
