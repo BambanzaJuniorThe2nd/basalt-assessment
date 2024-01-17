@@ -25,7 +25,9 @@ export interface ManagesDbs {
   db(name: string): Db;
 }
 
-export interface Container {}
+export interface Container {
+  readonly aggregatorService: AggregatorRepository;
+}
 
 /**
  * Interface for an object ID field on a document.

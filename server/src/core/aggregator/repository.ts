@@ -3,25 +3,25 @@ import { ManagesDbs, CoreError, ErrorCode, CoreMessage as messages } from "..";
 import { Db, Collection, ObjectId } from "mongodb";
 
 export interface AggregatorArgs {
-  imdbDocs: IMDBRepository;
-  youtubeDocs: YoutubeRepository;
+  imdbService: IMDBRepository;
+  youtubeService: YoutubeRepository;
 }
 
 const COLLECTION = "aggregatorDocs";
-export class AggregatorDocs implements AggregatorRepository {
+export class AggregatorService implements AggregatorRepository {
   readonly dbManager: ManagesDbs;
   readonly db: Db;
   readonly collection: Collection<AggregatorDoc>;
-  readonly imdbDocs: IMDBRepository;
-  readonly youtubeDocs: YoutubeRepository;
+  readonly imdbService: IMDBRepository;
+  readonly youtubeService: YoutubeRepository;
   private _indexesCreated: boolean;
 
   constructor(dbManager: ManagesDbs, args: AggregatorArgs) {
     this.dbManager = dbManager;
     this.db = dbManager.mainDb();
     this.collection = this.db.collection(COLLECTION);
-    this.imdbDocs = args.imdbDocs;
-    this.youtubeDocs = args.youtubeDocs;
+    this.imdbService = args.imdbService;
+    this.youtubeService = args.youtubeService;
     this._indexesCreated = false;
   }
 
@@ -102,9 +102,9 @@ export class AggregatorDocs implements AggregatorRepository {
       let doc = await this.collection.findOne<AggregatorDoc>(query);
 
       if (!doc) {
-        const imdbDoc = await this.imdbDocs.getByTitle(term);
+        const imdbDoc = await this.imdbService.getByTitle(term);
         if (imdbDoc) {
-          const youtubeDocs = await this.youtubeDocs.getByQuery(
+          const youtubeDocs = await this.youtubeService.getByQuery(
             `${imdbDoc.title} ${imdbDoc.year}`,
             imdbDoc.imdbId
           );

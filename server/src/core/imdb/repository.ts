@@ -4,7 +4,7 @@ import { createRapidApiRequest } from "../util";
 import { Db, Collection, ObjectId } from "mongodb";
 
 const COLLECTION = "imdbDocs";
-export class IMDBDocs implements IMDBRepository {
+export class IMDBService implements IMDBRepository {
   readonly dbManager: ManagesDbs;
   readonly db: Db;
   readonly collection: Collection<IMDBDoc>;

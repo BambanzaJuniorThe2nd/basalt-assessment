@@ -4,7 +4,7 @@ import { createRapidApiRequest } from "../util";
 import { Db, Collection, ObjectId } from "mongodb";
 
 const COLLECTION = "youtubeDocs";
-export class YoutubeDocs implements YoutubeRepository {
+export class YoutubeService implements YoutubeRepository {
   readonly dbManager: ManagesDbs;
   readonly db: Db;
   readonly collection: Collection<YouTubeDoc>;

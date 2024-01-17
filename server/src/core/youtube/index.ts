@@ -1,1 +1,1 @@
-export { YoutubeDocs } from './repository';
+export { YoutubeService } from './repository';
