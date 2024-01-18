@@ -116,9 +116,13 @@ export class IMDBService implements IMDBRepository {
    */
   async getByTitle(title: string): Promise<IMDBDoc> {
     try {
-      // Remove white spaces from the query parameter and use a case-insensitive regular expression
-      const cleanedTitle = title.replace(/\s/g, "");
-      const query = { title: { $regex: new RegExp(cleanedTitle, "i") } };
+      const cleanedTitle = title.replace(/\s+/g, " ").trim().toLowerCase();
+      const query = {
+        title: {
+          $regex: new RegExp(cleanedTitle),
+          $options: "i",
+        },
+      };
       let entry = await this.collection.findOne<IMDBDoc>(query);
 
       if (!entry) {

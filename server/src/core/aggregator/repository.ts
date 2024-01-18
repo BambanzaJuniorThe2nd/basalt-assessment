@@ -102,8 +102,13 @@ export class AggregatorService implements AggregatorRepository {
    */
   async getBySearchTerm(term: string): Promise<AggregatorDoc> {
     try {
-      const cleanedTerm = term.replace(/\s/g, "");
-      const query = { title: { $regex: new RegExp(cleanedTerm, "i") } };
+      const cleanedTerm = term.replace(/\s+/g, " ").trim().toLowerCase();
+      const query = {
+        title: {
+          $regex: new RegExp(cleanedTerm),
+          $options: "i",
+        },
+      };
       let doc = await this.collection.findOne<AggregatorDoc>(query);
 
       if (!doc) {
