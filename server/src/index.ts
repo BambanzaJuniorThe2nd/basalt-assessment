@@ -35,6 +35,7 @@ const start = async () => {
     logger.info(`Starting app in ${envMode} mode...`);
     logger.info("Bootstrapping core services...");
     const core = await bootstrapCore(config);
+    logger.info("Creating Express server...");
     const expressServer = createServer();
     logger.info("Mounting REST API...");
     mountApi(expressServer, core, config);

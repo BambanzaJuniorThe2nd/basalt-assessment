@@ -9,7 +9,6 @@ const client = redisLib.createClient({
 });
 
 (async () => {
-  console.log(`redis://${process.env.REDIS_IP_ADDR}:6379`);
   await client.connect();
 })();
 
@@ -31,8 +30,6 @@ export const compressAndCache = async (
     // Check cache first
     const cached = await client.hGet(CACHE_KEY, cacheKey);
     if (!cached) {
-      console.log("NOT CACHED YET");
-
       // Cache compressed result
       await client.hSet(CACHE_KEY, cacheKey, JSON.stringify(result));
     }
@@ -68,6 +65,12 @@ export const getFromCache = async (
   }
 };
 
+/**
+ * Gets all cached data from Redis.
+ * Checks if any cached data exists in the hash.
+ * If so, returns parsed array of cached data.
+ * If not, calls next() to proceed to retrieving from DB.
+ */
 export const getAllFromCache = async (
   req: ApiRequest,
   res: ApiResponse,
