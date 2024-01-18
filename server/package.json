@@ -28,6 +28,7 @@
     "luxon": "^3.0.4",
     "mongodb": "^4.10.0",
     "morgan": "^1.10.0",
+    "redis": "^4.6.12",
     "winston": "^3.8.2"
   },
   "devDependencies": {
