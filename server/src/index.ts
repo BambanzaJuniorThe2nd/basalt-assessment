@@ -24,6 +24,7 @@ const loadConfig = (env: any): SuperConfig => {
     YOUTUBE_API__URL: env.YOUTUBE_API__URL || "",
     YOUTUBE_API__HEADERS_KEY: env.YOUTUBE_API__HEADERS_KEY || "",
     YOUTUBE_API__HEADERS_HOST: env.YOUTUBE_API__HEADERS_HOST || "",
+    REDIS_IP_ADDR: env.REDIS_IP_ADDR || "localhost"
   };
 };
 

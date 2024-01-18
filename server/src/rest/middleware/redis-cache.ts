@@ -1,10 +1,15 @@
 import { ApiRequest, ApiResponse, ApiNextFunction, StatusCode } from "..";
 import redisLib = require("redis");
 import cron = require("node-cron");
+require("dotenv").config();
 
 // Centralized Redis configuration
-const client = redisLib.createClient();
+const client = redisLib.createClient({
+  url: `redis://${process.env.REDIS_IP_ADDR}:6379`,
+});
+
 (async () => {
+  console.log(`redis://${process.env.REDIS_IP_ADDR}:6379`);
   await client.connect();
 })();
 

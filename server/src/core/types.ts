@@ -17,6 +17,7 @@ export interface CoreConfig {
   YOUTUBE_API__URL: string;
   YOUTUBE_API__HEADERS_KEY: string;
   YOUTUBE_API__HEADERS_HOST: string;
+  REDIS_IP_ADDR: string;
 }
 
 export interface ManagesDbs {
