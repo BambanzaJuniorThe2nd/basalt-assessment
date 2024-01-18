@@ -17,7 +17,7 @@ export const getRouter = (core: Container) => {
   router.use(cors());
   router.use(injectCore(core));
 
-  router.use('/aggregators', aggregators);
+  router.use("/aggregators", aggregators);
   router.use("/", root);
 
   router.use(errorHandler());
